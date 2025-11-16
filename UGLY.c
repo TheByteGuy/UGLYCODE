@@ -1,193 +1,84 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<curl/curl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <curl/curl.h>
 
-#define ح١ 50000
-#define ح٢ 60000
-#define ح٣ 20000
+#define ر1 50000
+#define ر2 60000
+#define ر3 20000
 
-static char لصق[ح١+1];static size_t طوللصق=0;
-static char مصري[ح٢+1],ليت[ح٢+1],عربي[ح٢*3+1],نظيف[ح٢*3+1],مشفّر[ح٢*3+1];
+static char ا[ر1+1],ب[ر2+1],ج[ر2+1],ح[ر2*3+1],خ[ر2*3+1],د[ر2*3+1];
+static size_t ذ=0;
 
-size_t كاتب١(void*بيانات,size_t حجم,size_t عدد,void*مستعمل){
-    size_t ك=حجم*عدد,*طول=(size_t*)مستعمل;
-    if(*طول+ك>ح١)ك=ح١-*طول;
-    memcpy(لصق+*طول,بيانات,ك);
-    *طول+=ك;
-    return ك;
-}
-
-size_t كاتب٢(void*بيانات,size_t حجم,size_t عدد,void*مستعمل){
-    return fwrite(بيانات,حجم,عدد,(FILE*)مستعمل);
-}
-
-static void ترميز_رابط(const char*دخ,char*خ){
-    static const char سداسي[]="0123456789ABCDEF";
-    while(*دخ){
-        unsigned char حركه=(unsigned char)*دخ++;
-        if((حركه>='a'&&حركه<='z')||(حركه>='A'&&حركه<='Z')||(حركه>='0'&&حركه<='9')){
-            *خ++=حركه;
-        }else if(حركه==' '){
-            *خ++='+';
-        }else{
-            *خ++='%';
-            *خ++=سداسي[حركه>>4];
-            *خ++=سداسي[حركه&15];
-        }
-    }
-    *خ=0;
-}
+size_t ز(void *و,size_t ط,size_t ظ,void *ع){size_t غ=ط*ظ;size_t *ف=(size_t*)ع;if(*ف+غ>ر1)غ=ر1-*ف;memcpy(ا+*ف,و,غ);*ف+=غ;return غ;}
+size_t ص(void *و,size_t ط,size_t ظ,void *ع){return fwrite(و,ط,ظ,(FILE*)ع);}
+static void ض(const char *ك,char *ل){static const char م[]="0123456789ABCDEF";unsigned char ن;while((ن=(unsigned char)*ك++)){if((ن>='a'&&ن<='z')||(ن>='A'&&ن<='Z')||(ن>='0'&&ن<='9'))*ل++=ن;else if(ن==' ')*ل++='+';else{*ل++='%';*ل++=م[n>>4];*ل++=م[n&15];}}*ل=0;}
 
 int main(){
-    char رابط[2048];
-    printf("Pastebin URL (استعمل /raw/...): ");
-    fgets(رابط,sizeof(رابط),stdin);
-    رابط[strcspn(رابط,"\n")]=0;
+    char س[2048],*ش; printf("Pastebin URL: ");
+    if(!fgets(س,sizeof(س),stdin)){volatile int ي=0;while(!ي){}}
+    س[strcspn(س,"\n")]=0; ش=س; while(*ش==' '||*ش=='\t')ش++;
+    if(!strstr(ش,"http://")){volatile int ي=0;while(!ي){}}
+    if(ش!=س)memmove(س,ش,strlen(ش)+1);
 
-    curl_global_init(CURL_GLOBAL_DEFAULT);
-    CURL*مقبض=curl_easy_init();
+    curl_global_init(CURL_GLOBAL_DEFAULT); CURL *ق=curl_easy_init();
+    ذ=0; curl_easy_setopt(ق,CURLOPT_URL,س);
+    curl_easy_setopt(ق,CURLOPT_FOLLOWLOCATION,1L);
+    curl_easy_setopt(ق,CURLOPT_WRITEFUNCTION,ز);
+    curl_easy_setopt(ق,CURLOPT_WRITEDATA,&ذ);
+    curl_easy_perform(ق); ا[ذ]=0;
+    printf("\n==== RAW ====\n%s\n\n",ا);
 
-    طوللصق=0;
-    curl_easy_setopt(مقبض,CURLOPT_URL,رابط);
-    curl_easy_setopt(مقبض,CURLOPT_FOLLOWLOCATION,1L);
-    curl_easy_setopt(مقبض,CURLOPT_WRITEFUNCTION,كاتب١);
-    curl_easy_setopt(مقبض,CURLOPT_WRITEDATA,&طوللصق);
-    curl_easy_perform(مقبض);
-    لصق[طوللصق]=0;
+    size_t ر=0; for(size_t ط=0;ط<ذ&&ر<ر2-2;ط++){char ك=ا[ط];if(ك>='A'&&ك<='Z')ك+=32;
+        switch(ك){case 'a':ب[ر++]='a';ب[ر++]='h';break;case 'e':ب[ر++]='e';ب[ر++]='e';break;case 'o':ب[ر++]='o';ب[ر++]='o';break;case 'h':ب[ر++]='7';break;case 'g':ب[ر++]='g';ب[ر++]='h';break;default:ب[ر++]=ك;}
+    } ب[ر]=0; printf("=== EGYPT ===\n%s\n\n",ب);
 
-    printf("\n==================== RAW PASTEBIN ====================\n%s\n======================================================\n\n",لصق);
+    ر=0; for(size_t ط=0;ب[ط]&&ر<ر2-1;ط++){char ك=ب[ط]; if(ك=='e'||ك=='E')ك='3'; else if(ك=='o'||ك=='O')ك='0'; ج[ر++]=ك;} ج[ر]=0;
+    printf("=== LEET ===\n%s\n\n",ج);
 
-    size_t ف=0,س=0;
-    for(س=0;س<طوللصق&&ف<ح٢-2;س++){
-        char ح=لصق[س];
-        if(ح>='A'&&ح<='Z')ح+=32;
-        switch(ح){
-            case 'a':مصري[ف++]='a';مصري[ف++]='h';break;
-            case 'e':مصري[ف++]='e';مصري[ف++]='e';break;
-            case 'o':مصري[ف++]='o';مصري[ف++]='o';break;
-            case 'h':مصري[ف++]='7';break;
-            case 'g':مصري[ف++]='g';مصري[ف++]='h';break;
-            default:مصري[ف++]=ح;break;
-        }
+    ر=0; ح[0]=0;
+    for(size_t ط=0;ج[ط]&&ر<sizeof(ح)-8;ط++){
+        char ك=ج[ط]; const char *ل=NULL;
+        switch(ك){case 'a':ل="ا";break;case 'b':ل="ب";break;case 't':ل="ت";break;case 'j':ل="ج";break;case '7':ل="ح";break;case 'd':ل="د";break;case 'r':ل="ر";break;case 's':ل="س";break;case '3':ل="ع";break;case 'f':ل="ف";break;case 'q':ل="ق";break;case 'k':ل="ك";break;case 'l':ل="ل";break;case 'm':ل="م";break;case 'n':ل="ن";break;case 'h':ل="ه";break;case 'w':ل="و";break;case 'y':ل="ي";break;case '0':ل="٠";break;case ' ':ل=" ";break;case '\t':ل=" ";break;
+            default:ح[ر++]=ك;ح[ر]=0;continue;}
+        size_t پ=strlen(ل); if(ر+پ<sizeof(ح)-1){memcpy(ح+ر,ل,پ); ر+=پ; ح[ر]=0;}
     }
-    مصري[ف]=0;
-    printf("================= EGYPTIANIFIED TEXT =================\n%s\n======================================================\n\n",مصري);
+    printf("=== ARABIC ===\n%s\n\n",ح);
 
-    size_t ل=0;
-    for(س=0;مصري[س]&&ل<ح٢-1;س++){
-        char ح=مصري[س];
-        if(ح=='e'||ح=='E')ح='3';
-        else if(ح=='o'||ح=='O')ح='0';
-        ليت[ل++]=ح;
-    }
-    ليت[ل]=0;
-    printf("====================== LEET TEXT =====================\n%s\n======================================================\n\n",ليت);
+    strncpy(خ,ح,sizeof(خ)-1); خ[sizeof(خ)-1]=0;
+    for(size_t ط=0;خ[ط];ط++){unsigned char ك=خ[ط]; if(ك=='\n'||ك=='\r'||ك=='<'||ك=='>'||ك=='\"'||ك=='?'||ك=='&'||ك=='#')خ[ط]=' ';}
+    خ[150]=0; printf("=== CLEAN ===\n%s\n\n",خ);
 
-    size_t ع=0;
-    عربي[0]=0;
-    for(س=0;ليت[س]&&ع<sizeof(عربي)-8;س++){
-        char ح=ليت[س];
-        const char*بديل=0;
-        switch(ح){
-            case 'a':بديل="ا";break;
-            case 'b':بديل="ب";break;
-            case 't':بديل="ت";break;
-            case 'j':بديل="ج";break;
-            case '7':بديل="ح";break;
-            case 'd':بديل="د";break;
-            case 'r':بديل="ر";break;
-            case 's':بديل="س";break;
-            case '3':بديل="ع";break;
-            case 'f':بديل="ف";break;
-            case 'q':بديل="ق";break;
-            case 'k':بديل="ك";break;
-            case 'l':بديل="ل";break;
-            case 'm':بديل="م";break;
-            case 'n':بديل="ن";break;
-            case 'h':بديل="ه";break;
-            case 'w':بديل="و";break;
-            case 'y':بديل="ي";break;
-            case '0':بديل="٠";break;
-            case ' ':بديل=" ";break;
-            case '\t':بديل=" ";break;
-            default:
-                عربي[ع++]=ح;
-                عربي[ع]=0;
-                continue;
-        }
-        if(بديل){
-            size_t طبديل=strlen(بديل);
-            if(ع+طبديل<sizeof(عربي)-1){
-                memcpy(عربي+ع,بديل,طبديل);
-                ع+=طبديل;
-                عربي[ع]=0;
-            }
-        }
-    }
-    عربي[ع]=0;
-    printf("==================== ARABIC-LIKE TEXT ================\n%s\n======================================================\n\n",عربي);
+    ض(خ,د); printf("=== URL ===\n%s\n\n",د);
 
-    strncpy(نظيف,عربي,sizeof(نظيف)-1);
-    نظيف[sizeof(نظيف)-1]=0;
-    for(س=0;نظيف[س];س++){
-        unsigned char ح=(unsigned char)نظيف[س];
-        if(ح=='\n'||ح=='\r')نظيف[س]=' ';
-        if(ح=='<'||ح=='>'||ح=='\"'||ح=='?'||ح=='&'||ح=='#')نظيف[س]=' ';
-    }
-    if(strlen(نظيف)>150)نظيف[150]=0;
-    printf("==================== SANITIZED TEXT ==================\n%s\n======================================================\n\n",نظيف);
+    char ع[ر3]; snprintf(ع,sizeof(ع),"https://translate.google.com/translate_tts?ie=UTF-8&q=%s&tl=ar&client=tw-ob",د);
+    printf("=== TTS URL ===\n%s\n\n",ع);
 
-    ترميز_رابط(نظيف,مشفّر);
-    printf("================== URL-ENCODED TEXT ==================\n%s\n======================================================\n\n",مشفّر);
+    struct curl_slist *اا=NULL;
+    اا=curl_slist_append(اا,"User-Agent: Mozilla/5.0");
+    اا=curl_slist_append(اا,"Accept: */*");
+    اا=curl_slist_append(اا,"Referer: https://translate.google.com/");
+    اا=curl_slist_append(اا,"Connection: keep-alive");
 
-    char رابط_صوت[ح٣];
-    snprintf(رابط_صوت,sizeof(رابط_صوت),
-        "https://translate.google.com/translate_tts?ie=UTF-8&q=%s&tl=ar&client=tw-ob",
-        مشفّر);
-    printf("===================== GOOGLE URL =====================\n%s\n======================================================\n\n",رابط_صوت);
+    FILE *ف=fopen("output.mp3","wb");
+    curl_easy_setopt(ق,CURLOPT_HTTPHEADER,اا);
+    curl_easy_setopt(ق,CURLOPT_URL,ع);
+    curl_easy_setopt(ق,CURLOPT_WRITEFUNCTION,ص);
+    curl_easy_setopt(ق,CURLOPT_WRITEDATA,ف);
+    CURLcode ء=curl_easy_perform(ق);
+    fclose(ف);
 
-    struct curl_slist*رؤوس=NULL;
-    رؤوس=curl_slist_append(رؤوس,"User-Agent: Mozilla/5.0");
-    رؤوس=curl_slist_append(رؤوس,"Accept: */*");
-    رؤوس=curl_slist_append(رؤوس,"Referer: https://translate.google.com/");
-    رؤوس=curl_slist_append(رؤوس,"Connection: keep-alive");
-
-    FILE*ملفmp3=fopen("output.mp3","wb");
-    curl_easy_setopt(مقبض,CURLOPT_HTTPHEADER,رؤوس);
-    curl_easy_setopt(مقبض,CURLOPT_URL,رابط_صوت);
-    curl_easy_setopt(مقبض,CURLOPT_WRITEFUNCTION,كاتب٢);
-    curl_easy_setopt(مقبض,CURLOPT_WRITEDATA,ملفmp3);
-    CURLcode نتيجه=curl_easy_perform(مقبض);
-    fclose(ملفmp3);
-
-    if(نتيجه!=CURLE_OK){
-        printf("TTS FAIL: %s\n",curl_easy_strerror(نتيجه));
-        return 0;
-    }
+    if(ء!=CURLE_OK){printf("TTS FAIL\n");return 0;}
     printf("OK: output.mp3 saved\n");
 
-    FILE*فmp3=fopen("output.mp3","rb");
-    printf("\n==================== MP3 FIRST BYTES ==================\n");
-    for(س=0;س<50;س++){
-        int ح=fgetc(فmp3);
-        if(ح<0)break;
-        printf("%02X ",ح&0xFF);
-    }
-    fclose(فmp3);
-    printf("\n======================================================\n");
+    FILE *ك=fopen("output.mp3","rb");
+    printf("=== MP3 BYTES ===\n");
+    for(int ط=0;ط<50;ط++){int و=fgetc(ك); if(و<0)break; printf("%02X ",و&0xFF);} fclose(ك);
+    printf("\n");
 
-    {
-        FILE*دخول=fopen("output.mp3","rb");
-        FILE*خروج=fopen("output.mp4","wb");
-        char عازل[4096];size_t ق;
-        while((ق=fread(عازل,1,sizeof(عازل),دخول))>0)fwrite(عازل,1,ق,خروج);
-        fclose(دخول);fclose(خروج);
-        printf("Saved cursed output.mp4\n");
-    }
+    {FILE *قـ=fopen("output.mp3","rb"),*لـ=fopen("output.mp4","wb");char ي[4096];size_t ط;
+    while((ط=fread(ي,1,4096,قـ))>0)fwrite(ي,1,ط,لـ); fclose(قـ); fclose(لـ);}
+    printf("Saved cursed output.mp4\n");
 
-    curl_slist_free_all(رؤوس);
-    curl_easy_cleanup(مقبض);
-    curl_global_cleanup();
-    return 0;
+    curl_slist_free_all(اا); curl_easy_cleanup(ق); curl_global_cleanup();
 }

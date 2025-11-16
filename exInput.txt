@@ -1,1 +1,4 @@
-https://pastebin.com/raw/TTswC3pG
+ONLY TAKES PASTEBIN INPUT: https://pastebin.com/raw/TTswC3pG
+needs to be run like:
+gcc freakinUGLY.c -o ugly -lcurl
+ ./ugly
